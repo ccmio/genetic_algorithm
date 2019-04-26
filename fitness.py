@@ -1,7 +1,12 @@
 # 适应度函数直接使用5个位置基因的加权总分
 class Fit:
-    def __init__(self, buildings):
+    def __init__(self, buildings, rain, land, money, location, prefer):
         self.buildings = buildings
+        self.rain = float(rain)
+        self.land = float(land)
+        self.money = float(money)
+        self.location = float(location)
+        self.prefer = float(prefer)
 
     def fitness(self):
         value = []
@@ -46,14 +51,27 @@ class Fit:
                 u1, u2, u3 = 4, 4, 1
             if self.buildings[i][4] == 3:
                 u1, u2, u3 = 1, 1, 5
+            # 包含既定条件的基因权值和计算：
+            a1 = ((0.3 + 0.2 * self.rain) * m1 + (0.3 + 0.2 * self.prefer) * m2 +
+                  (0.2 + 0.2 * self.land) * m3 + (0.2 + 0.2 * self.money) * m4) /\
+                 (1 + 0.2 * self.rain + 0.2 * self.prefer + 0.2 * self.land + 0.2 * self.money)
 
-            a1 = 0.3 * m1 + 0.3 * m2 + 0.2 * m3 + 0.2 * m4
-            a2 = 0.4 * n1 + 0.4 * n2 + 0.2 * n3
-            a3 = 0.35 * p1 + 0.3 * p2 + 0.35 * p3
-            t1 = 0.4 * o1 + 0.4 * o2 + 0.2 * o3
-            t2 = 0.4 * u1 + 0.4 * u2 + 0.2 * u3
+            a2 = ((0.4 + 0.2 * self.land) * n1 + (0.4 + 0.2 * self.land) * n2 +
+                  (0.2 + 0.2 * self.money) * n3) /\
+                (1 + 2 * 0.2 * self.land + 0.2 * self.money)
+
+            a3 = ((0.35 + 0.2 * self.land) * p1 + (0.3 + 0.2 * self.prefer) * p2 +
+                  (0.35 + 0.2 * self.money + 0.2 * self.land) * p3) / \
+                 (1 + 2 * 0.2 * self.land + 0.2 * self.prefer + 0.2 * self.money)
+
+            t1 = ((0.4 + 0.2 * self.prefer) * o1 + (0.4 + 0.2 * self.prefer) * o2 +
+                  (0.2 + 0.2 * self.money) * o3) /\
+                 (1 + 2 * 0.2 * self.prefer + 0.2 * self.money)
+            t2 = ((0.4 + 0.2 * self.prefer) * u1 + (0.4 + 0.2 * self.prefer) * u2 +
+                  (0.2 + 0.2 * self.money) * u3) /\
+                 (1 + 2 * 0.2 * self.prefer + 0.2 * self.money)
 
             temp = a1 + a2 + a3 + t1 + t2
             value.append(temp)
-
+        # 返回种群中每个个体的基因型权值和，即适应度
         return value

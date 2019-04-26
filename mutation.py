@@ -16,4 +16,5 @@ class Mutate:
                     self.children[i][key] = np.random.randint(1, 6)
                 else:
                     self.children[i][key] = np.random.randint(1, 4)
+        # 返回变异后的子代
         return self.children
