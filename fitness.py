@@ -1,9 +1,12 @@
+# 适应度函数直接使用5个位置基因的加权总分
 class Fit:
     def __init__(self, buildings):
         self.buildings = buildings
 
     def fitness(self):
         value = []
+        # 设定不同位置基因的不同权重
+        # 一号位基因即为self.buildings[i][0]：1代表A11，2代表A12....5代表A15，其余以此类推
         for i in range(len(self.buildings)):
             if self.buildings[i][0] == 1:
                 m1, m2, m3, m4 = 2, 5, 5, 4
